@@ -11,7 +11,11 @@ app.use(session({secret: 'secret', resave: 'false', saveUninitialized: 'false'})
 
 // Initial view - loads Connect To QuickBooks Button
 app.get('/', function (req, res) {
-  res.render('home', config)
+
+
+  var d = [{name: 'Sakshi', age : '24'},{name: 'Tejas', age : '25'}]
+    /*res.render('empdata',{result:d})*/
+  res.render('home', {result:d})
 })
 
 app.get('/qk', function (req, res) {
@@ -359,11 +363,11 @@ var odata = [];
 console.log("QKD::",JSON.stringify(pushData) )
 })
 
-/*app.listen(4000, function () {
+app.listen(4000, function () {
   console.log('Example app listening on port 4000!')
-})*/
-https.createServer(function (req, res) {
-    res.writeHead(200, {'Content-Type': 'text/plain'});
-    res.write('Hello World!');
-    res.end();
-}).listen(4000);
+})
+// https.createServer(function (req, res) {
+//     res.writeHead(200, {'Content-Type': 'text/plain'});
+//     res.write('Hello World!');
+//     res.end();
+// }).listen(4000);

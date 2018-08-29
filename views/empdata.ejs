@@ -1,0 +1,25 @@
+<table border="1" class="table table-striped">
+    <thead class="thead-dark">
+    <tr>
+        <th>EmployeeNumber</th>
+        <th>Gender</th>
+        <th>Id</th>
+        <th>Title</th>
+        <th>GivenName</th>
+    </tr>
+    </thead>
+    <% result.forEach(function(obj){ %>
+    <tbody>
+    <tr>
+        <td><%=obj.EmployeeNumber%></td>
+        <td><%=obj.Gender%></td>
+        <td><%=obj.Id%></td>
+        <td><%=obj.Title%></td>
+        <td><%=obj.GivenName%></td>
+
+
+
+    </tr>
+    </tbody>
+    <%})%>
+</table>

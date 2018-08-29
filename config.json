@@ -1,7 +1,7 @@
 {
-  "clientId": "Q0o0GMF0pJCbltMufTwX9d234Hnr93UrL63vmbuRr4VQ8WpdQf",
-  "clientSecret": "L8MSg1J4h8IKsdw8q2REbTQ9pZxVfUUTXSSXFlrl",
-  "redirectUri": "http://localhost:4000/callback",
+  "clientId": "Q0WykW24KsBoASdfRPFkEE25yFrzGF525gJXpXEacu39qE7FlX",
+  "clientSecret": "pvHPGbVJAUSjapVtDCOkMUQQRFPV0t1JHK6IFzkJ",
+  "redirectUri": "https://89ab46fe.ngrok.io/callback",
   "configurationEndpoint": "https://developer.api.intuit.com/.well-known/openid_sandbox_configuration/",
   "api_uri": "https://sandbox-quickbooks.api.intuit.com/v3/company/",
   "scopes": {

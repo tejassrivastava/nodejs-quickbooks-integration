@@ -29,7 +29,7 @@
 
         $("#result").html('Loading...')
         $.get("/emp_call", function(data) {
-            $("#result").html(JSON.stringify(data, null, 2))
+            $("#result").html(data)
         })
     }
 
@@ -60,9 +60,9 @@
 <br><br><br>
   <div class="container">
     <div class="jumbotron border border-primary">
-  <p style="color: whitesmoke">Welcome<% if (locals.givenName) { %>, <%= locals.givenName %><% } %>!</p>
-  <p style="color: whitesmoke">Would you like to make a sample API call?</p>
-  <div>
+    <p style="color: whitesmoke">Welcome<% if (locals.givenName) { %>, <%= locals.givenName %><% } %>!</p>
+   <p style="color: whitesmoke">Would you like to make a sample API call?</p>
+   <div>
     <button type="button" class="btn btn-outline-primary" onclick="apiCall()">QuickBooks API Call</button>
     <button type="button" class="btn btn-outline-secondary" onclick="refreshCall()">Refresh Token Call</button>
     <button type="button" class="btn btn-outline-info" onclick="revokeCall()">Revoke Token Call</button>
@@ -71,57 +71,10 @@
     <button type="button" class="btn btn-outline-success" onclick="empCall()">Get All Emp</button>
     <button type="button" class="btn btn-outline-info" onclick="jourCall()">Journal Entry</button>
     <br><br>
-    <div><code id="result"></code></div>
+
   </div>
-
-
-
-
-   <!--   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Open modal for @mdo</button>
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">Open modal for @fat</button>
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Open modal for @getbootstrap</button>
-
-      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <form>
-                <div class="form-group">
-                  <label for="recipient-name" class="col-form-label">Recipient:</label>
-                  <input type="text" class="form-control" id="recipient-name">
-                </div>
-                <div class="form-group">
-                  <label for="message-text" class="col-form-label">Message:</label>
-                  <textarea class="form-control" id="message-text"></textarea>
-                </div>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Send message</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
--->
-
-
-
-
-
-
-
-
-
     </div>
-
+    <div id="result"></div>
 
   </div>
 <script>
