@@ -1,28 +1,25 @@
 [![Sample Banner](views/Sample.png)][ss1]
 
-## OAuth 2.0 - Node.js Sample App
+## QuickBooks Node.js Integration App
 
-The [Intuit Developer team](https://developer.intuit.com) has written this OAuth 2.0 Sample App in Node.js to provide working examples of OAuth 2.0 concepts, and how to integrate with Intuit endpoints.
-
-
-### Getting Started
+### Oauth Concept
 
 Before beginning, it may be helpful to have a basic understanding of OAuth 2.0 concepts.  There are plenty of tutorials and guides to get started with OAuth 2.0.
 
 It is also expected that your development environment is properly set up for Node.js and NPM.
 
-Note: this app was tested with Node.js versions v6.0.0, v7.0.0, and v8.0.0.
+Note: this app was tested with Node.js version v8.0.0.
 
 #### Setup
 
 Clone the repository:
 ```
-git clone https://github.com/IntuitDeveloper/oauth2-nodejs.git
+git clone https://github.com/tejassrivastava/nodejs-quickbooks-integration.git
 ```
 
 Install NPM dependencies:
 ```
-cd oauth2-nodejs
+cd project directory
 npm install
 ```
 
@@ -31,7 +28,7 @@ Launch your app:
 node app.js
 ```
 
-Your app should be running!  If you direct your browser to `https://localhost:3000`, you should see the welcome screen.  Please note - the app will not be fully functional until we finish configuring it.
+Your app should be running!  If you direct your browser to `https://localhost:4000/qk`, you should see the welcome screen.  Please note - the app will not be fully functional until we finish configuring it.
 
 ### Configuring your app
 
@@ -77,7 +74,7 @@ While you are in `config.json`, you'll notice the scope sections.
     ]
   },
 ```
-It is important to ensure that the scopes you are requesting match the scopes allowed on the Developer Portal.  For this sample app to work by default, your app on Developer Portal must support both Accounting and Payment scopes.  If you'd like to support Accounting only, simply remove the`com.intuit.quickbooks.payment` scope from `config.json`.
+It is important to ensure that the scopes you are requesting match the scopes allowed on the Developer Portal.  For this app to work by default, your app on Developer Portal must support both Accounting and Payment scopes.  If you'd like to support Accounting only, simply remove the`com.intuit.quickbooks.payment` scope from `config.json`.
 
 ----------
 
@@ -96,20 +93,6 @@ All flows should work.  The sample app supports the following flows:
 **Get App Now (Connect Handler)** - this flow requests both OpenID and non-OpenID scopes.  It simulates the request that would come once a user clicks "Get App Now" on the [apps.com](https://apps.com) website, after you publish your app.
 
 ----------
-
-### Project Structure
-
-In order to find the code snippets you are interested in, here is how the code is organized.
-
-#### Launching the OAuth2 flow
-
-Examples of launching the OAuth2 flow, including passing the right parameters and generating CSRF ant-forgery tokens, can be found in:
-
-```
-/routes/sign_in_with_intuit.js
-/routes/connect_to_quickbooks.js
-/routes/connect_handler.js
-```
 
 #### Callback URL
 
