@@ -1,5 +1,3 @@
-[![Sample Banner](views/Sample.png)][ss1]
-
 ## QuickBooks Node.js Integration App
 
 ### Oauth Concept
@@ -29,6 +27,24 @@ node app.js
 ```
 
 Your app should be running!  If you direct your browser to `https://localhost:4000/qk`, you should see the welcome screen.  Please note - the app will not be fully functional until we finish configuring it.
+
+### Basic Setup
+
+```
+Installation Instruction : 
+
+1. clone the app from github.
+2. Install ngrok to make local ip accessible over www. Run ngrok http 4000 in the directory where ngrok is downloaded and unzipped.
+3. Add "/callback" at end of ngrok IP address provided by running above command.
+4. Add this callback url in config.json and also in my app settings in developer.intuit.com
+5. Copy production client ID and client secret from keys section of my app and paste it in config.json
+6. Now run node app.js from the directory where project is cloned.
+7. Visit browser at <ngrok-ip-address>/qk
+8. Click on sign with intuit.
+9. After successful authentication and authorization you'll be redirected to /connected page.
+10. Click on journal entry to initiate the process.
+
+```
 
 ### Configuring your app
 
