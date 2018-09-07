@@ -33,7 +33,7 @@ router.get('/', function (req, res) {
             // API Call was a success!
             //res.json(JSON.parse(response.body))
 
-            var resData = {
+            /*var resData = {
                 "QueryResponse": {
                     "Employee": [
                         {
@@ -106,9 +106,13 @@ router.get('/', function (req, res) {
                 },
                 "time": "20 18-08-29T10:39:46.655-07:00"
             }
+*/
+        console.log("Success::");
+        var rb = JSON.parse(response.body);
+        console.log("Response body::",response.body);
 
-
-            var d = resData.QueryResponse.Employee;
+            var d =  rb.QueryResponse.Employee;
+            console.log("D:::::",d);
             res.render('empdata',{result:d})
         }, function (err) {
             console.log(err)

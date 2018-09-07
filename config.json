@@ -1,9 +1,9 @@
 {
-  "clientId": "Q0WykW24KsBoASdfRPFkEE25yFrzGF525gJXpXEacu39qE7FlX",
-  "clientSecret": "pvHPGbVJAUSjapVtDCOkMUQQRFPV0t1JHK6IFzkJ",
-  "redirectUri": "https://89ab46fe.ngrok.io/callback",
+  "clientId": "Q0Z4Zakxvml0LyHnnGcM4AEDn7yDrRd6GnWLQJB5VBg5gTjnQM",
+  "clientSecret": "djUPNMxqifsSxRBJRdmYSs2XIHuiiwgp2ytVv9d6",
+  "redirectUri": "https://c5f99a9e.ngrok.io/callback",
   "configurationEndpoint": "https://developer.api.intuit.com/.well-known/openid_sandbox_configuration/",
-  "api_uri": "https://sandbox-quickbooks.api.intuit.com/v3/company/",
+  "api_uri": "https://quickbooks.api.intuit.com/v3/company/",
   "scopes": {
     "sign_in_with_intuit": [
       "com.intuit.quickbooks.accounting",

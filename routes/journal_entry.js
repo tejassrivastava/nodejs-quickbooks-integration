@@ -147,7 +147,7 @@ router.get('/', function (req, res) {
                     // console.log("Arr::",arr);
 //fdata.push(arr);
                 }
-                // console.log("Final Data::",fdata);
+                 console.log("Final Data::",fdata);
                 var odata = [];
                 for(var i = 0; i<fdata.length;i++)
                 {
@@ -157,12 +157,13 @@ router.get('/', function (req, res) {
 //            console.log("Id:",fdata[i]["empData"][j]);
                         //console.log(fdata[i]["empData"][j],"-->",fdata[i]["Ac"][j]);
                         // console.log(fdata[i]["empData"][j],"-->",fdata[i]["Ac"][j]);
-
+                     /*   console.log("Class::",fdata[i][j]["Class"])*/
                         var x = {"Amount" : fdata[i]["empData"][j],
                             "jAcc" : fdata[i]["Ac"][j]["jAcc"],
                             "jAccNum" : fdata[i]["Ac"][j]["jAccNum"],
                             "Description" : jAccDesc[j],
                             "Type" : jAccType[j]
+
                         }
                         q.push(x);
                         //  console.log("X::",q);
@@ -179,12 +180,15 @@ router.get('/', function (req, res) {
                         Type: 'Debit' },
                 */
 
-                console.log("Odata::",odata);
-                var pushData = {
-                    "Line": []
-                };
+                /*console.log("Odata::",odata);*/
+
+                var myd = [];
                 for(var i = 0;i<odata.length;i++)
-                {var pd;
+                {var pushData = {
+                    "Line": []
+
+                };
+                    var pd;
                     for (var j =0;j<odata[i].length;j++)
                     {
                         //console.log("Odata::",odata[i][j]["jAcc"]);
@@ -202,34 +206,104 @@ router.get('/', function (req, res) {
 
                          console.log("Description::",Description);*/
                         var id  ;
+                        var clv;
+                        var cln;
+                        var dpv;
+                        var dpn;
+                        var eid;
+                        var ename;
+                        if(odata[i][j]["jAcc"] == "Entity Ref: Value")
+                        {
+                            eid = odata[i][j]["Amount"];
+                        }
+                        if(odata[i][j]["jAcc"] == "Entity Ref: Name")
+                        {
+                            ename = odata[i][j]["Amount"];
+                        }
 
                         if(odata[i][j]["jAcc"] == "JournalEntryId")
                         {
                             id = odata[i][j]["Amount"];
                         }
+                        if(odata[i][j]["jAcc"] == "Class Value")
+                        {
+                            clv = odata[i][j]["Amount"];
+                        }
+
+                        if(odata[i][j]["jAcc"] == "Class Name")
+                        {
+                            cln = odata[i][j]["Amount"];
+                        }
+
+                        if(odata[i][j]["jAcc"] == "Dep Value")
+                        {
+                            dpv = odata[i][j]["Amount"];
+                        }
+
+                        if(odata[i][j]["jAcc"] == "Dep Name")
+                        {
+                            dpn = odata[i][j]["Amount"];
+                        }
+
+
+                       /* console.log('Class::',clv);*/
 
                             pd=
-                            {
+                                {
+                                    "Id":id,
+                                    "Description": odata[i][j]["Description"],
+                                    "Amount": odata[i][j]["Amount"],
+                                    "DetailType": "JournalEntryLineDetail",
+                                    "JournalEntryLineDetail": {
+                                        "PostingType": odata[i][j]["Type"] ,
+                                        "Entity": {
+                                            "Type": "Employee",
+                                            "EntityRef": {
+                                                "value": eid,
+                                                "name": ename
+                                            }
+                                        },
 
-                                "Description": odata[i][j]["Description"],
-                                "Amount": odata[i][j]["Amount"],
-                                "DetailType": "JournalEntryLineDetail",
-                                "JournalEntryLineDetail": {
-                                    "PostingType": odata[i][j]["Type"] ,
-                                    "AccountRef": {
-                                        "value": odata[i][j]["jAccNum"],
-                                        "name": odata[i][j]["jAcc"]
+                                        "ClassRef": {
+
+                                            "value": clv,
+
+                                            "name": cln
+
+                                        },
+
+                                        "DepartmentRef": {
+
+                                            "value": dpv,
+
+                                            "name": dpn
+
+                                        },
+
+                                        "AccountRef": {
+                                            "value": odata[i][j]["jAccNum"],
+                                            "name": odata[i][j]["jAcc"]
+                                        }
                                     }
                                 }
-                            }
+
+
+
 
                         //   console.log("PushData::",JSON.stringify(pd));
-                        if(j >= 6)
+                        if(j >= 10){
+                            console.log(eid,ename,id,clv,cln,dpv,dpn);
                             pushData.Line.push(pd);
+                        }
                     }
+console.log("_____________________________");
+                    myd.push(pushData);
 
                 }
-                console.log("QKD::",JSON.stringify(pushData) )
+
+                console.log("Data::", JSON.stringify(myd) );
+              /*  console.log("QKD1::",JSON.stringify(pushData.Line[0]) )*/
+
 
                 /* **********************************
                   Pushing Data To QuickBooks
@@ -242,6 +316,8 @@ router.get('/', function (req, res) {
                   })
 
                   // Set up API call (with OAuth2 accessToken)
+                for(var i =0;i<myd.length;i++)
+                {
                   var url = config.api_uri + req.session.realmId + '/journalentry?minorversion=4'
                   console.log('Making API call to: ' + url)
                   var requestObj = {
@@ -251,11 +327,11 @@ router.get('/', function (req, res) {
                           'Authorization': 'Bearer ' + token.accessToken,
                           'Accept': 'application/json'
                       },
-                      json: pushData
+                     json: myd[i]
                 }
 
 
-                  console.log("ReqObj::",requestObj);
+                  /*console.log("ReqObj::",requestObj);*/
                   // Make API call
                   request.post(requestObj, function (err, response) {
                       // Check if 401 response was returned - refresh tokens if so!
@@ -267,18 +343,18 @@ router.get('/', function (req, res) {
                           }
 
                           // API Call was a success!
-
-                          console.log("Quick Book : JournalEntry Success :: ",response.body);
-                          res.json(JSON.parse(response.body))
+                          console.log("Quick Book : JournalEntry Success :: ");
+                         /* console.log("Quick Book : JournalEntry Success :: ",response.body);*/
+                          res.end()
                       }, function (err) {
                           console.log(err)
-                          return res.json(err)
+                          res.end()
                       })
                   })
 
 
             }
-
+            }
 
 
 

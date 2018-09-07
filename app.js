@@ -9,6 +9,127 @@ app.set('view engine', 'ejs')
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(session({secret: 'secret', resave: 'false', saveUninitialized: 'false'}))
 
+app.use("/ed",function(req,res) {
+
+    console.log("In function getCompanyAccountDetails");
+
+    var compDet = {
+
+        "QueryResponse": {
+
+            "Department": [
+
+                {
+
+                    "Name": "DEV",
+
+                    "SubDepartment": false,
+
+                    "FullyQualifiedName": "DEV",
+
+                    "Active": true,
+
+                    "domain": "QBO",
+
+                    "sparse": false,
+
+                    "Id": "2",
+
+                    "SyncToken": "0",
+
+                    "MetaData": {
+
+                        "CreateTime": "2018-09-04T04:39:46-07:00",
+
+                        "LastUpdatedTime": "2018-09-04T04:39:46-07:00"
+
+                    }
+
+                },
+
+                {
+
+                    "Name": "GOV",
+
+                    "SubDepartment": false,
+
+                    "FullyQualifiedName": "GOV",
+
+                    "Active": true,
+
+                    "domain": "QBO",
+
+                    "sparse": false,
+
+                    "Id": "1",
+
+                    "SyncToken": "0",
+
+                    "MetaData": {
+
+                        "CreateTime": "2018-09-04T04:33:05-07:00",
+
+                        "LastUpdatedTime": "2018-09-04T04:33:05-07:00"
+
+                    }
+
+                },
+
+                {
+
+                    "Name": "SMB",
+
+                    "SubDepartment": false,
+
+                    "FullyQualifiedName": "SMB",
+
+                    "Active": true,
+
+                    "domain": "QBO",
+
+                    "sparse": false,
+
+                    "Id": "3",
+
+                    "SyncToken": "0",
+
+                    "MetaData": {
+
+                        "CreateTime": "2018-09-04T04:39:53-07:00",
+
+                        "LastUpdatedTime": "2018-09-04T04:39:53-07:00"
+
+                    }
+
+                }
+
+            ],
+
+            "startPosition": 1,
+
+            "maxResults": 3
+
+        },
+
+        "time": "2018-09-05T04:44:27.554-07:00"
+
+    }
+
+
+
+    var accounts = compDet.QueryResponse.Department;
+
+    for(var i=0;i<accounts.length;i++)
+    {
+        console.log(accounts[i]["Name"],",",accounts[i]["Id"]);
+
+
+
+
+    }
+res.end();
+})
+
 // Initial view - loads Connect To QuickBooks Button
 app.get('/', function (req, res) {
 
@@ -362,6 +483,7 @@ var odata = [];
         }
 console.log("QKD::",JSON.stringify(pushData) )
 })
+
 
 app.listen(4000, function () {
   console.log('Example app listening on port 4000!')
