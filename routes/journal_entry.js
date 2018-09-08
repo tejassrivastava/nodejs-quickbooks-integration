@@ -185,6 +185,8 @@ router.get('/', function (req, res) {
                 var myd = [];
                 for(var i = 0;i<odata.length;i++)
                 {var pushData = {
+
+                    "TxnDate":"",
                     "Line": []
 
                 };
@@ -212,6 +214,13 @@ router.get('/', function (req, res) {
                         var dpn;
                         var eid;
                         var ename;
+                        var txnDate;
+
+
+                        if(odata[i][j]["jAcc"] == "TxnDate")
+                        {
+                            txnDate = odata[i][j]["Amount"];
+                        }
                         if(odata[i][j]["jAcc"] == "Entity Ref: Value")
                         {
                             eid = odata[i][j]["Amount"];
@@ -291,9 +300,10 @@ router.get('/', function (req, res) {
 
 
                         //   console.log("PushData::",JSON.stringify(pd));
-                        if(j >= 10){
+                        if(j >= 11){
                             console.log(eid,ename,id,clv,cln,dpv,dpn);
                             pushData.Line.push(pd);
+                            pushData.TxnDate = txnDate;
                         }
                     }
 console.log("_____________________________");
