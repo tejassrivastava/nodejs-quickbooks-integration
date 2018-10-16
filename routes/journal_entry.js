@@ -13,7 +13,10 @@ var {google} = require('googleapis');
 var SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
 var TOKEN_PATH = 'token.json';
 
+// Route to get journalEntry from UI.
+
 router.get('/', function (req, res) {
+
     // Load client secrets from a local file.
     fs.readFile('credentials.json', (err, content) => {
         if (err) return console.log('Error loading client secret file:', err);
@@ -79,36 +82,46 @@ router.get('/', function (req, res) {
     function listMajors(auth) {
         var sheets = google.sheets({version: 'v4', auth});
         sheets.spreadsheets.values.get({
-            spreadsheetId: '1ECJmT3_uyHDYflsgEH9DaS1gsju1_CUzE55oUlYrMw8',
-            range: 'IntuitSheet',
+            spreadsheetId: config.sheetId, // Google Sheet ID configurable through config.json
+            range: config.sheetName,  // Google Sheet Worksheet Name configurable through config.json
         }, (errg, resp) => {
             if (errg) return console.log('The API returned an error: ' + errg);
 
-            console.log("ResData::",resp.data.values);
+            //console.log("ResData::",resp.data.values);
 
+            // Fetching all records from google sheets and storing in data field.
             var data = resp.data.values;
             if (data) {
 
 
 
+                // Reading data Row wise
 
+                // Parsing All Non data column
+
+                // Parsing Account Names : Row 1 in sheet
                 var jAcc = data[0];
                  //console.log("jAcc:",jAcc);
 
+                // Parsing Account Numbers as in quickbooks : Row 2 in sheet
                 var jAccNum = data[1];
                 //console.log("jAccNum:",jAccNum);
 
+                // Parsing Account Type i.e. Debit/Credit : Row 3 in sheet
                 var jAccType = data[2];
                 //console.log("jAccType:",jAccType);
 
+                // Parsing Account Description : Row 4 in sheet
                 var jAccDesc = data[3];
                 //console.log("jAccDesc:",jAccDesc);
 
+                // Parsing all employee data i.e. all rows after first four rows.
                 var empData = data.slice(4,data.length);
 
                 // console.log("empData: ",empData);
 
-//    console.log("Data::",data);
+                //    console.log("Data::",data);
+
                 var fdata = [];
                 for(var i = 0 ; i<empData.length;i++)
                 { var arr = [];
@@ -145,9 +158,12 @@ router.get('/', function (req, res) {
 
 
                     // console.log("Arr::",arr);
-//fdata.push(arr);
+                    // fdata.push(arr);
                 }
-                 console.log("Final Data::",fdata);
+               //  console.log("Final Data::",fdata);
+
+
+                // Forming json data from row wise data
                 var odata = [];
                 for(var i = 0; i<fdata.length;i++)
                 {
@@ -166,12 +182,14 @@ router.get('/', function (req, res) {
 
                         }
                         q.push(x);
-                        //  console.log("X::",q);
+                         /* console.log("X::",q[j].Type);
+                          console.log("**************");*/
+
                     }
                     odata.push(q);
                     console.log("__________________________________________");
                 }
-
+              //  console.log("Odata::",odata);
                 /*
                     { Amount: '0',
                         jAcc: 'Arrear of salary',
@@ -182,7 +200,10 @@ router.get('/', function (req, res) {
 
                 /*console.log("Odata::",odata);*/
 
+                // Forming Journal Entry Lines
+
                 var myd = [];
+                var jEner = [];
                 for(var i = 0;i<odata.length;i++)
                 {var pushData = {
 
@@ -207,16 +228,39 @@ router.get('/', function (req, res) {
                             var Description = odata[i][j]["Description"];
 
                          console.log("Description::",Description);*/
-                        var id  ;
-                        var clv;
-                        var cln;
-                        var dpv;
-                        var dpn;
-                        var eid;
-                        var ename;
-                        var txnDate;
+                        var id  ; // Journal Entry ID
+                        var clv;  // Class Value
+                        var cln;  // Class Name
+                        var dpv;  // Department Value
+                        var dpn;  // Department Name
+                        var eid;  // Entity Ref ID
+                        var ename; // Entity Ref Name
+                        var txnDate; // Transaction Date
+                        var balancedStatus;
 
+                        // Checking if the entry is balanced or not.
 
+                        if(odata[i][j]["jAcc"] == "Balanced")
+                        {
+                            console.log("BALANCED::",odata[i][j]["Amount"])
+                            if(odata[i][j]["Amount"] == 0)
+                            {
+                                console.log("Entry "+(i+1)+" Is Balanced");
+
+                                jEner.push({"Message":"Entry "+(i+1)+" Is Balanced"});
+                            }
+                            else {
+                                console.log("Entry "+(i+1)+" Is Not Balanced");
+                                jEner.push({"Message":"Entry "+(i+1)+" Is Not Balanced"});
+                            }
+                        }
+                       /* if(odata[i][j]["jAcc"] == "Balanced" && balancedStatus == 0)
+                        {
+                            console.log("Entry Is Balanced")
+                        }
+                        else {
+                            console.log("Entry Is Noy Balanced")
+                        }*/
                         if(odata[i][j]["jAcc"] == "TxnDate")
                         {
                             txnDate = odata[i][j]["Amount"];
@@ -300,8 +344,8 @@ router.get('/', function (req, res) {
 
 
                         //   console.log("PushData::",JSON.stringify(pd));
-                        if(j >= 11){
-                            console.log(eid,ename,id,clv,cln,dpv,dpn);
+                        if(j >= 12){
+                            //console.log(eid,ename,id,clv,cln,dpv,dpn);
                             pushData.Line.push(pd);
                             pushData.TxnDate = txnDate;
                         }
@@ -311,7 +355,7 @@ console.log("_____________________________");
 
                 }
 
-                console.log("Data::", JSON.stringify(myd) );
+                //console.log("Data::", JSON.stringify(myd) );
               /*  console.log("QKD1::",JSON.stringify(pushData.Line[0]) )*/
 
 
@@ -349,16 +393,18 @@ console.log("_____________________________");
                           if(err || response.statusCode != 200) {
                               console.log("Error::",err);
                               console.log("Response::",JSON.stringify(response.body));
-                              return res.json({error: err, statusCode: response.statusCode})
+                              return res.json({error: err, statusCode: response.statusCode,"errorMessage":jEner})
                           }
 
                           // API Call was a success!
-                          console.log("Quick Book : JournalEntry Success :: ");
+                          console.log("Quick Book : JournalEntry Successful :: ");
                          /* console.log("Quick Book : JournalEntry Success :: ",response.body);*/
-                          res.end()
+                          //res.end()
+                          return res.json({"Status":"Journal Entry Successful"})
                       }, function (err) {
                           console.log(err)
-                          res.end()
+                          //res.end()
+                          return res
                       })
                   })
 

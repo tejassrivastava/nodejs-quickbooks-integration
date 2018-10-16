@@ -1,7 +1,7 @@
 {
   "clientId": "Q0Z4Zakxvml0LyHnnGcM4AEDn7yDrRd6GnWLQJB5VBg5gTjnQM",
   "clientSecret": "djUPNMxqifsSxRBJRdmYSs2XIHuiiwgp2ytVv9d6",
-  "redirectUri": "https://5cd01dc0.ngrok.io/callback",
+  "redirectUri": "https://cec03d0a.ngrok.io/callback",
   "configurationEndpoint": "https://developer.api.intuit.com/.well-known/openid_sandbox_configuration/",
   "api_uri": "https://quickbooks.api.intuit.com/v3/company/",
   "scopes": {
@@ -24,5 +24,8 @@
       "phone",
       "address"
     ]
-  }
+  },
+
+  "sheetId":"1ECJmT3_uyHDYflsgEH9DaS1gsju1_CUzE55oUlYrMw8",
+  "sheetName":"IntuitSheet"
 }
